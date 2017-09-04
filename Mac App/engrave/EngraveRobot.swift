@@ -14,8 +14,6 @@ import ORSSerial
  x[0/1]
  y[0/1]
  
- 
- 
  */
 
 class EngraveRobot : NSObject, ORSSerialPortDelegate {
@@ -23,7 +21,7 @@ class EngraveRobot : NSObject, ORSSerialPortDelegate {
     
     var serialPort : ORSSerialPort?
 
-    
+
     var isLaserOn : Bool = false
     {
         didSet{
@@ -35,9 +33,11 @@ class EngraveRobot : NSObject, ORSSerialPortDelegate {
         }
     }
     
+    
 
     func move(to point:CGPoint)
     {
+        self.send(message: "x0");
     }
     
     
@@ -47,12 +47,10 @@ class EngraveRobot : NSObject, ORSSerialPortDelegate {
     
     func connect()
     {
-        serialPort = ORSSerialPort(path: "/dev/cu.usbmodem1411")
+        serialPort = ORSSerialPort(path: "/dev/tty.usbmodem1411")
         serialPort?.delegate = self
         serialPort?.baudRate = 9600
         serialPort?.open()
-        //serialPort.sendData(someData) // someData is an NSData object
-        //serialPort.close() // Later, when you're done with the port
     }
 
     

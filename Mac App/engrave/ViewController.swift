@@ -55,6 +55,14 @@ class ViewController: NSViewController{
     }
 
     
+    @IBAction func move(_ sender: Any) {
+        self.robot.move(to: CGPoint.zero)
+    }
+    
+    
+    
+    
+    
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
