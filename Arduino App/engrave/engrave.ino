@@ -6,13 +6,11 @@ Motor motorY(10,11);
 Laser laser(12);
 Joystick joystick(A4,A5);
 
+
 void setup() {
   Serial.begin(9600);
   Serial.println("start");
 
-  motorX = Motor(8,9);
-  motorY = Motor(10,11);
-  laser  = Laser(12);
 }
 
 String readInstruction()
@@ -85,7 +83,9 @@ void move(long x,long y,bool laser)
     Serial.println("move finish");
 }
 void loop() {
-  String op = readInstruction();
+  String op     = readInstruction();
+  String action = op.substring(0,1);
+  
   switch(joystick.moveAction())
   {
     case 1:break;
@@ -99,7 +99,7 @@ void loop() {
 
 
   
-  if (op.substring(0,1) == "m")
+  if (action == "m")
   {
     Serial.println(op);
     int x      = op.substring(1,6).toInt();
@@ -112,7 +112,7 @@ void loop() {
     move(x,y,laser);
   }
 
-  if (op.substring(0,1) == "x")
+  if (action == "x")
   {
     Serial.println(op);
     bool direction = op.substring(1,2).toInt() == 1;
@@ -124,7 +124,7 @@ void loop() {
     }
 
   }
-  if (op.substring(0,1) == "y")
+  if (action == "y")
   {
     Serial.println(op);
     bool direction = op.substring(1,2).toInt() == 1;
