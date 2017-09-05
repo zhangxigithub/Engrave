@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import CoreBluetooth
 
 
 
@@ -29,7 +30,10 @@ class ViewController: NSViewController{
     
     @IBAction func sendMessage(_ sender: Any) {
         
-        robot.send(message:"hah")
+        robot.send(message: "m0050000500")
+
+        
+        //robot.send(message:"hah")
     }
     @IBAction func importSVG(_ sender: Any)
     {
@@ -57,6 +61,8 @@ class ViewController: NSViewController{
     
     @IBAction func move(_ sender: Any) {
         self.robot.move(to: CGPoint.zero)
+        
+        robot.send(message: "x0")
     }
     
     

@@ -49,11 +49,11 @@ class Laser
 
   void on()
   {
-    digitalWrite(port, HIGH);
+    digitalWrite(port, LOW);
   }
   void off()
   {
-    digitalWrite(port, LOW);
+    digitalWrite(port, HIGH);
   }
 };
 class Joystick
@@ -77,6 +77,8 @@ class Joystick
     return 0;
   }
 };
+
+
 
 
 

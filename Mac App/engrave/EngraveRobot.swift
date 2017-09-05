@@ -8,6 +8,7 @@
 
 import Foundation
 import ORSSerial
+import CoreBluetooth
 
 /*
  m[000][000][0/1]
@@ -16,10 +17,10 @@ import ORSSerial
  
  */
 
-class EngraveRobot : NSObject, ORSSerialPortDelegate {
+class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
 
     
-    var serialPort : ORSSerialPort?
+    
 
 
     var isLaserOn : Bool = false
@@ -37,71 +38,176 @@ class EngraveRobot : NSObject, ORSSerialPortDelegate {
 
     func move(to point:CGPoint)
     {
-        self.send(message: "x0");
+        
     }
     
     
-    
+    override init() {
+        super.init()
+        manager = CBCentralManager(delegate: self, queue: DispatchQueue.main)
+    }
     
     //MARK: - serial port
     
     func connect()
     {
-        serialPort = ORSSerialPort(path: "/dev/tty.usbmodem1411")
-        serialPort?.delegate = self
-        serialPort?.baudRate = 9600
-        serialPort?.open()
-    }
-
-    
-    
-    func serialPortWasOpened(_ serialPort: ORSSerialPort) {
-        print("opened")
-        //self.openCloseButton.title = "Close"
-    }
-    
-    func serialPortWasClosed(_ serialPort: ORSSerialPort) {
-        print("closed")
-    }
-    
-    func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        print("didReceive")
-        
-        //if
-            if let string = String(data: data, encoding: String.Encoding.utf8)
-            {
-            print(string)
-        }
 
     }
-    
-    func serialPortWasRemoved(fromSystem serialPort: ORSSerialPort) {
-        //self.serialPort = nil
-        //self.openCloseButton.title = "Open"
-    }
-    
-    func serialPort(_ serialPort: ORSSerialPort, didEncounterError error: Error) {
-        print("SerialPort \(serialPort) encountered an error: \(error)")
-    }
-
-
-    
-    
     
     func send(message:String)
     {
-        if let data = message.data(using: String.Encoding.utf8)
-        {
-            serialPort?.send(data)
-        }
+        peripheral?.writeValue(message.data(using: .utf8)!, for: characteristic!, type: CBCharacteristicWriteType.withResponse)
+    }
+    func didReceive(message: String)
+    {
+        print(message)
     }
 
+    
+
+
+    var manager         : CBCentralManager?
+    var peripheral      : CBPeripheral?
+    var characteristic  : CBCharacteristic?
+    var flush : String = ""
+    
+    func stop()
+    {
+        manager?.stopScan()
+    }
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        
+        switch central.state
+        {
+        case .poweredOn:
+            print("poweredOn")
+            central.scanForPeripherals(withServices: nil, options: nil)
+            
+        case .poweredOff:
+            print("poweredOff")
+        case .unsupported:
+            print("unsupported")
+        case .unauthorized:
+            print("unauthorized")
+        case .unknown:
+            print("unknown")
+        case .resetting:
+            print("resetting")
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        print("didFailToConnect")
+    }
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("didDisconnectPeripheral")
+    }
+    
+    
+    func connect(peripheral:CBPeripheral)
+    {
+        print("connect \(peripheral)")
+        
+        self.peripheral = peripheral
+        self.peripheral?.delegate = self
+        manager?.connect(self.peripheral!, options: nil)
+    }
+    func disConnect()
+    {
+        if self.peripheral != nil
+        {
+            manager?.cancelPeripheralConnection(self.peripheral!)
+        }
+    }
+    
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        
+        print(peripheral)
+        print(advertisementData)
+        print(RSSI)
+
+
+        if peripheral.name == "JDY-08"
+        {
+            self.connect(peripheral: peripheral)
+            self.stop()
+        }
+        
+        
+    }
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        print("didConnect")
+        print(peripheral)
+        peripheral.discoverServices(nil)
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        
+        print("didDiscoverServices")
+        if error == nil
+        {
+            for s in peripheral.services ?? [CBService]()
+            {
+                print(s)
+                print(s.uuid)
+                print("=====")
+                peripheral.discoverCharacteristics(nil, for: s)
+            }
+        }
+    }
+    
+   
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        
+        print("didDiscoverCharacteristicsFor")
+        for c in service.characteristics ?? [CBCharacteristic]()
+        {
+            print(c.uuid)
+            
+            if c.uuid.uuidString == "FFE1"
+            {
+                self.characteristic = c
+                print("FFE1 \(c)")
+                print(c.properties)
+
+
+                peripheral.setNotifyValue(true, for: c)
+                print("可以写入")
+
+            }
+        }
+        
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        
+       
+        print(characteristic)
+        if characteristic.value != nil
+        {
+            flush += String(data: characteristic.value!, encoding: .utf8) ?? ""
+            if flush.contains("\r\n")
+            {
+                let arr = flush.components(separatedBy: "\r\n")
+                
+                for  i  in 0 ..< arr.count-1 {
+                    self.didReceive(message: arr[i])
+                }
+                
+                flush = arr.last ?? ""
+            }
+            print()
+        }
+
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        peripheral.readValue(for: characteristic)
+        //print("didUpdateNotificationStateFor \(characteristic) \(characteristic.value) \(error)")
+    }
 }
-
-
-
-
-
 
 
 
