@@ -1,64 +1,10 @@
-class Motor
-{
-    public:
-    Motor(){}
-    Motor(int d,int s):directionPort(d),stepPort(s){
-    pinMode(d,OUTPUT);
-    pinMode(s,OUTPUT);
-  }
-
-  int stepPort;
-  int directionPort;
-  int position = 0;
-  bool direction = false;
-  
-  void changeDirection(bool d)
-  {
-    direction = d;
-    digitalWrite(directionPort, d);
-  }
-
-  void step()
-  {
-    position += direction ? 1 : -1;
-    
-    if ((position <= 0) || (position >= 10000))
-    {
-      return;
-    }
-    
-    digitalWrite(stepPort, HIGH);
-    delayMicroseconds(450);
-    digitalWrite(stepPort, LOW);
-    delayMicroseconds(450);
-
-    
-  }
-
-};
-class Laser
-{
-    public:
-    Laser(){}
-    Laser(int p):port(p){
-    pinMode(p,OUTPUT);
-  }
-
-  int port;
-
-  void on()
-  {
-    digitalWrite(port, HIGH);
-  }
-  void off()
-  {
-    digitalWrite(port, LOW);
-  }
-};
+#include "module.cpp"
 
 
-Motor motorX,motorY;
-Laser laser;
+Motor motorX(8,9);
+Motor motorY(10,11);
+Laser laser(12);
+Joystick joystick(A4,A5);
 
 void setup() {
   Serial.begin(9600);
@@ -140,6 +86,18 @@ void move(long x,long y,bool laser)
 }
 void loop() {
   String op = readInstruction();
+  switch(joystick.moveAction())
+  {
+    case 1:break;
+    case 2:break;
+    case 3:break;
+    case 4:break;
+    default:break;
+    }
+
+
+
+
   
   if (op.substring(0,1) == "m")
   {
