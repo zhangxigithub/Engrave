@@ -18,16 +18,7 @@ void setup() {
   
 }
 
-String readInstruction()
-{
-  String op = "";
-  while( ble.available() > 0 )
-  {
-    op += char(ble.read());
-    delay(2);
-  }
-  return op;
-}
+
 
 void move(long x,long y,bool enableLaser)
 {
@@ -41,7 +32,7 @@ void move(long x,long y,bool enableLaser)
 
     long dX = x - motorX.position;
     long dY = y - motorY.position;
-    float m = float(dY)/float(dX);
+    float m = abs(float(dY)/float(dX));
     ble.println("dX : "+String(dX) +" dY : "+String(dY)+" m : "+String(m));
     motorX.changeDirection((dX > 0));
     motorY.changeDirection((dY > 0));
@@ -89,29 +80,33 @@ void move(long x,long y,bool enableLaser)
     }
     ble.println("move finish x:"+String(motorX.position)+" y : "+String(motorX.position));
 }
-void loop() {
+String op = "";
 
-  /*
-  if (ble.available())  
-    Serial.write(ble.read());  
-  if (Serial.available())  
-    ble.write(Serial.read());  
-  */
-  
-  String op     = readInstruction();
+void loop() {
+ if( ble.available() > 0 ){
+    op += char(ble.read());
+    delay(2);
+  }
+  if(op.endsWith("#") == false)
+  {
+    return;
+  }
+
+
+
   String action = op.substring(0,1);
   
-  switch(joystick.moveAction())
-  {
-    case 1:break;
-    case 2:break;
-    case 3:break;
-    case 4:break;
-    default:break;
-    }
+//  switch(joystick.moveAction())
+//  {
+//    case 1:break;
+//    case 2:break;
+//    case 3:break;
+//    case 4:break;
+//    default:break;
+//    }
 
 
-  
+
   if (action == "m")
   {
     ble.println(op);
@@ -124,30 +119,43 @@ void loop() {
 
     move(x,y,laser);
   }
-
-  if (action == "x")
+  else if (action == "x")
   {
     ble.println(op);
-    bool direction = op.substring(1,2).toInt() == 1;
+    bool direction = op.substring(1,2) == "1";
     motorX.changeDirection(direction);
 
-    for(int i=0;i<1000;i++)
+    for(int i=0;i<5000;i++)
     {
       motorX.step();
     }
-
-  }
-  if (action == "y")
+    motorX.duration = 1000;
+    delay(10);
+  }else if (action == "y")
   {
     ble.println(op);
-    bool direction = op.substring(1,2).toInt() == 1;
+    bool direction = op.substring(1,2) == "0";
     motorY.changeDirection(direction);
-    for(int i=0;i<1000;i++)
+    for(int i=0;i<5000;i++)
     {
       motorY.step();
     }
+    motorY.duration = 1000;
+    delay(10);
+  }else if (action == "l")
+  {
+    ble.println(op);
+    bool laserOn = op.substring(1,2) == "1";
+    if(laserOn)
+    {
+      laser.on();
+     }else
+     {
+      laser.off();
+      }
   }
 
+ op = "";
 }
 
 

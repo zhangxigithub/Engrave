@@ -12,6 +12,7 @@ class Motor
   int directionPort;
   int position = 0;
   bool direction = false;
+  int duration = 1000;
   
   void changeDirection(bool d)
   {
@@ -23,15 +24,20 @@ class Motor
   {
     position += direction ? 1 : -1;
     
-    if ((position <= 0) || (position >= 10000))
-    {
-      return;
-    }
+//    if ((position <= 0) || (position >= 10000))
+//    {
+//      return;
+//    }
     
     digitalWrite(stepPort, HIGH);
-    delayMicroseconds(450);
+    delayMicroseconds(duration);
     digitalWrite(stepPort, LOW);
-    delayMicroseconds(450);
+    delayMicroseconds(duration);
+
+    if (duration >500)
+    {
+      duration --;
+     }
 
     
   }

@@ -17,10 +17,14 @@ import CoreBluetooth
  
  */
 
+protocol EngraveRobotDelegate
+{
+    func didReceviveMessgae(message:String)
+}
 class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
 
     
-    
+    var delegate : EngraveRobotDelegate?
 
 
     var isLaserOn : Bool = false
@@ -56,11 +60,13 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
     
     func send(message:String)
     {
+    print("send \(message)")
         peripheral?.writeValue(message.data(using: .utf8)!, for: characteristic!, type: CBCharacteristicWriteType.withResponse)
     }
     func didReceive(message: String)
     {
-        print(message)
+        self.delegate?.didReceviveMessgae(message: message)
+        //print(message)
     }
 
     

@@ -12,25 +12,32 @@ import CoreBluetooth
 
 
 
-class ViewController: NSViewController{
+class ViewController: NSViewController,EngraveRobotDelegate{
 
     var svg : SVG?
     var robot : EngraveRobot!
     
+    @IBOutlet var logView: NSTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        robot = EngraveRobot()
+        robot.delegate = self
+        robot.connect()
     }
 
 
     @IBAction func connectRobot(_ sender: Any) {
-        robot = EngraveRobot()
-        robot.connect()
+//        robot = EngraveRobot()
+//        robot.connect()
     }
     
+    func didReceviveMessgae(message: String) {
+        self.logView.string = (self.logView.string ?? "") + message + "\n"
+    }
     
     @IBAction func sendMessage(_ sender: Any) {
         
-        robot.send(message: "m0050000500")
+        robot.send(message: "m02000020000#")
 
         
         //robot.send(message:"hah")
@@ -59,14 +66,31 @@ class ViewController: NSViewController{
     }
 
     
-    @IBAction func move(_ sender: Any) {
+    @IBAction func move(_ sender: NSButton) {
+        
+        
+        switch sender.tag
+        {
+        case 1: robot.send(message: "x0#")
+        case 2: robot.send(message: "x1#")
+        case 3: robot.send(message: "y0#")
+        case 4: robot.send(message: "y1#")
+        default:break;
+        }
+        print(sender);
+        
         self.robot.move(to: CGPoint.zero)
         
-        robot.send(message: "x0")
+    }
+    
+    @IBAction func laser(_ sender: Any) {
+        robot.send(message: "l1#")
     }
     
     
-    
+    @IBAction func off(_ sender: Any) {
+        robot.send(message: "l0#")
+    }
     
     
     override var representedObject: Any? {
