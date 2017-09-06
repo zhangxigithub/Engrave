@@ -775,11 +775,6 @@
                                     <action selector="sendMessage:" target="XfG-lQ-9wD" id="BsQ-9o-KaE"/>
                                 </connections>
                             </button>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDS-dC-MUI">
-                                <rect key="frame" x="482" y="248" width="98" height="124"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="IFP-CQ-7FF"/>
-                            </imageView>
                             <button verticalHuggingPriority="750" fixedFrame="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="UK7-zy-C4y">
                                 <rect key="frame" x="481" y="170" width="56" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -846,10 +841,27 @@
                                     </connections>
                                 </buttonCell>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E9V-Zi-PR1">
+                                <rect key="frame" x="226" y="84" width="128" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="import image" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sKf-7j-17f">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="importImage:" target="XfG-lQ-9wD" id="jnt-vv-59d"/>
+                                </connections>
+                            </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDS-dC-MUI">
+                                <rect key="frame" x="433" y="252" width="128" height="124"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="IFP-CQ-7FF"/>
+                            </imageView>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="logView" destination="COm-kO-6Id" id="nCI-Lp-ZrS"/>
+                        <outlet property="preview" destination="eDS-dC-MUI" id="WgU-aE-Ml1"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

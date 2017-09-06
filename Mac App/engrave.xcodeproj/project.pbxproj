@@ -14,6 +14,7 @@
 		3342DE711F57934F000126A5 /* SVGCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3342DE701F57934F000126A5 /* SVGCanvas.swift */; };
 		3342DE731F57AE9C000126A5 /* SVG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3342DE721F57AE9C000126A5 /* SVG.swift */; };
 		3342DE751F57B6A5000126A5 /* EngraveRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3342DE741F57B6A5000126A5 /* EngraveRobot.swift */; };
+		335523E71F60346E000B6F0A /* UIImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335523E61F60346E000B6F0A /* UIImageConverter.swift */; };
 		6BAA9F25C4DAE60799972F39 /* Pods_engrave.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FAD22CE303197A947228EAB /* Pods_engrave.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		3342DE701F57934F000126A5 /* SVGCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGCanvas.swift; sourceTree = "<group>"; };
 		3342DE721F57AE9C000126A5 /* SVG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVG.swift; sourceTree = "<group>"; };
 		3342DE741F57B6A5000126A5 /* EngraveRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngraveRobot.swift; sourceTree = "<group>"; };
+		335523E61F60346E000B6F0A /* UIImageConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageConverter.swift; sourceTree = "<group>"; };
 		833F6B226C548D365EC2BC68 /* Pods-engrave.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-engrave.debug.xcconfig"; path = "Pods/Target Support Files/Pods-engrave/Pods-engrave.debug.xcconfig"; sourceTree = "<group>"; };
 		F13D575E6E984C9DD0EF50F9 /* Pods-engrave.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-engrave.release.xcconfig"; path = "Pods/Target Support Files/Pods-engrave/Pods-engrave.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,6 +69,7 @@
 			children = (
 				3342DE611F573B10000126A5 /* AppDelegate.swift */,
 				3342DE631F573B10000126A5 /* ViewController.swift */,
+				335523E61F60346E000B6F0A /* UIImageConverter.swift */,
 				3342DE721F57AE9C000126A5 /* SVG.swift */,
 				3342DE741F57B6A5000126A5 /* EngraveRobot.swift */,
 				3342DE701F57934F000126A5 /* SVGCanvas.swift */,
@@ -221,6 +224,7 @@
 				3342DE731F57AE9C000126A5 /* SVG.swift in Sources */,
 				3342DE641F573B10000126A5 /* ViewController.swift in Sources */,
 				3342DE621F573B10000126A5 /* AppDelegate.swift in Sources */,
+				335523E71F60346E000B6F0A /* UIImageConverter.swift in Sources */,
 				3342DE711F57934F000126A5 /* SVGCanvas.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

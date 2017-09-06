@@ -8,6 +8,7 @@
 
 import Cocoa
 import CoreBluetooth
+import CoreImage
 
 
 
@@ -17,6 +18,7 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     var svg : SVG?
     var robot : EngraveRobot!
     
+    @IBOutlet weak var preview: NSImageView!
     @IBOutlet var logView: NSTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,58 @@ class ViewController: NSViewController,EngraveRobotDelegate{
         
         //robot.send(message:"hah")
     }
+    
+    
+    
+    
+    
+    @IBAction func importImage(_ sender: Any) {
+        
+        
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.message = "select *.svg file."
+        panel.beginSheetModal(for: self.view.window!) { (result) in
+            //print("finish ....")
+            
+            if panel.url != nil
+            {
+                
+                
+                if let image = CIImage(contentsOf: panel.url!)
+                {
+                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters: [:])
+                    
+                    
+                    
+                    let cgImage = CIContext(options: nil).createCGImage(ciImage, from: CGRect(x: 0, y: 0, width: 1000, height: 1000))
+                    //convert cgImage to 500*500px
+                    
+                    let nsImage = NSImage(cgImage:cgImage! ,size: NSSize(width:100, height:100))
+                    
+                    self.preview.image = nsImage;
+
+                    
+                    NSBitmapImageRep( )
+                    
+                    let rep = NSBitmapImageRep(cgImage: cgImage!)
+                    
+                    
+                    print(rep.size)
+                    
+                    print(rep.colorAt(x: 100, y: 100))
+
+                }
+                
+
+            }
+        }
+    }
+    
+    
+    
+    
     @IBAction func importSVG(_ sender: Any)
     {
         let panel = NSOpenPanel()
@@ -84,12 +138,12 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     }
     
     @IBAction func laser(_ sender: Any) {
-        robot.send(message: "l1#")
+        robot.isLaserOn = true
     }
     
     
     @IBAction func off(_ sender: Any) {
-        robot.send(message: "l0#")
+        robot.isLaserOn = false
     }
     
     

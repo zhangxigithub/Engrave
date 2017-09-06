@@ -32,8 +32,10 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
         didSet{
             if isLaserOn
             {
+                self.send(message: "l1#")
             }else
             {
+                self.send(message: "l0#")
             }
         }
     }
