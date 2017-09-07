@@ -22,9 +22,9 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     @IBOutlet var logView: NSTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        robot = EngraveRobot()
-        robot.delegate = self
-        robot.connect()
+        //robot = EngraveRobot()
+        //robot.delegate = self
+        //robot.connect()
     }
 
 
@@ -61,26 +61,46 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             
             if panel.url != nil
             {
-                
-                print(CIFilter(name: "CILineOverlay")?.attributes)
-                
                 if let image = CIImage(contentsOf: panel.url!)
                 {
-                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters: ["inputThreshold":0.1])
+                
+                    let f = CIFilter( name: "CILineOverlay", withInputParameters:[kCIInputImageKey:image])
+                    
+
+                    /*
+                     
+                     [f setValue:[NSNumber numberWithFloat:yscale]
+                     forKey:@"inputScale"];
+                     */
+                    let i = f?.value(forKeyPath: kCIOutputImageKey) as! CIImage
+                    
+                    
+                    
+                    let f2 = CIFilter(name: "CILanczosScaleTransform", withInputParameters: [kCIInputImageKey:i])
+                    
+                    f2?.setValue(0.3, forKey: kCIInputScaleKey)
+                    
+                    let i2 = f2?.value(forKeyPath: kCIOutputImageKey) as! CIImage
+                    
+                    let r = NSBitmapImageRep(ciImage: i2)
+                    print(r.size)
+                    print(r.colorAt(x: 10, y: 10))
+    
                     
                     /*
-                     <CILineOverlay: inputImage=nil inputNRNoiseLevel=0.07000000000000001 inputNRSharpness=0.71 inputEdgeIntensity=1 inputThreshold=0.1 inputContrast=50>)
-                     inputNRNoiseLevel
-                     [CIFilter filterWithName:@"CILineOverlay"
-                     keysAndValues:kCIInputImageKey,sourceImage,
-                     @"inputNRNoiseLevel",self.noiseLevel, //0.07, 0~0.1
-                     @"inputNRSharpness",self.sharpness,//0.71 ,0~2
-                     @"inputEdgeIntensity",self.edgeIntensity,//1.0 ,0.0~20
-                     @"inputThreshold",self.threshold,//0.1 ,0~1
-                     @"inputContrast",self.contrast,// 50 ,0.25~200
-                     nil];
+                     
+                     CIImage * resultimg=[lineFilter valueForKey:kCIOutputImageKey];
+                     
+                     
+                     NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithCIImage:resultimg];
+                     
+                     NSData *pngdata = [rep representationUsingType:NSPNGFileType properties:nil];
+                     self.imgView.image=[[NSImage alloc] initWithData:pngdata];
                      */
                     
+                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters:
+                        ["inputThreshold":0.1])
+                    print(ciImage)
                     
                     let cgImage = CIContext(options: nil).createCGImage(ciImage, from: CGRect(x: 0, y: 0, width: 1000, height: 1000))
                     //convert cgImage to 500*500px
@@ -90,7 +110,6 @@ class ViewController: NSViewController,EngraveRobotDelegate{
                     self.preview.image = nsImage;
 
                     
-                    NSBitmapImageRep( )
                     
                     let rep = NSBitmapImageRep(cgImage: cgImage!)
                     
