@@ -15,11 +15,9 @@
 		3342DE731F57AE9C000126A5 /* SVG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3342DE721F57AE9C000126A5 /* SVG.swift */; };
 		3342DE751F57B6A5000126A5 /* EngraveRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3342DE741F57B6A5000126A5 /* EngraveRobot.swift */; };
 		335523E71F60346E000B6F0A /* UIImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335523E61F60346E000B6F0A /* UIImageConverter.swift */; };
-		6BAA9F25C4DAE60799972F39 /* Pods_engrave.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FAD22CE303197A947228EAB /* Pods_engrave.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0FAD22CE303197A947228EAB /* Pods_engrave.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_engrave.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3342DE5E1F573B10000126A5 /* engrave.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = engrave.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3342DE611F573B10000126A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3342DE631F573B10000126A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -30,8 +28,6 @@
 		3342DE721F57AE9C000126A5 /* SVG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVG.swift; sourceTree = "<group>"; };
 		3342DE741F57B6A5000126A5 /* EngraveRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngraveRobot.swift; sourceTree = "<group>"; };
 		335523E61F60346E000B6F0A /* UIImageConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageConverter.swift; sourceTree = "<group>"; };
-		833F6B226C548D365EC2BC68 /* Pods-engrave.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-engrave.debug.xcconfig"; path = "Pods/Target Support Files/Pods-engrave/Pods-engrave.debug.xcconfig"; sourceTree = "<group>"; };
-		F13D575E6E984C9DD0EF50F9 /* Pods-engrave.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-engrave.release.xcconfig"; path = "Pods/Target Support Files/Pods-engrave/Pods-engrave.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +35,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BAA9F25C4DAE60799972F39 /* Pods_engrave.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,8 +46,6 @@
 			children = (
 				3342DE601F573B10000126A5 /* engrave */,
 				3342DE5F1F573B10000126A5 /* Products */,
-				A678DDB574510FEA3FD51E43 /* Pods */,
-				3F33FD50A624FC0BAA06DBD7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,23 +73,6 @@
 			path = engrave;
 			sourceTree = "<group>";
 		};
-		3F33FD50A624FC0BAA06DBD7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0FAD22CE303197A947228EAB /* Pods_engrave.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A678DDB574510FEA3FD51E43 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				833F6B226C548D365EC2BC68 /* Pods-engrave.debug.xcconfig */,
-				F13D575E6E984C9DD0EF50F9 /* Pods-engrave.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -104,12 +80,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3342DE6D1F573B10000126A5 /* Build configuration list for PBXNativeTarget "engrave" */;
 			buildPhases = (
-				31B7E3D6D83B56589AD3C157 /* [CP] Check Pods Manifest.lock */,
 				3342DE5A1F573B10000126A5 /* Sources */,
 				3342DE5B1F573B10000126A5 /* Frameworks */,
 				3342DE5C1F573B10000126A5 /* Resources */,
-				1969D21E5E66545126405496 /* [CP] Embed Pods Frameworks */,
-				1A30F94FFDBA7E3D3DF9B735 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -166,54 +139,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1969D21E5E66545126405496 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-engrave/Pods-engrave-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1A30F94FFDBA7E3D3DF9B735 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-engrave/Pods-engrave-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		31B7E3D6D83B56589AD3C157 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3342DE5A1F573B10000126A5 /* Sources */ = {
@@ -337,7 +262,6 @@
 		};
 		3342DE6E1F573B10000126A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 833F6B226C548D365EC2BC68 /* Pods-engrave.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -352,7 +276,6 @@
 		};
 		3342DE6F1F573B10000126A5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F13D575E6E984C9DD0EF50F9 /* Pods-engrave.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;

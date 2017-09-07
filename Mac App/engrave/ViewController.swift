@@ -62,11 +62,24 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             if panel.url != nil
             {
                 
+                print(CIFilter(name: "CILineOverlay")?.attributes)
                 
                 if let image = CIImage(contentsOf: panel.url!)
                 {
-                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters: [:])
+                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters: ["inputThreshold":0.1])
                     
+                    /*
+                     <CILineOverlay: inputImage=nil inputNRNoiseLevel=0.07000000000000001 inputNRSharpness=0.71 inputEdgeIntensity=1 inputThreshold=0.1 inputContrast=50>)
+                     inputNRNoiseLevel
+                     [CIFilter filterWithName:@"CILineOverlay"
+                     keysAndValues:kCIInputImageKey,sourceImage,
+                     @"inputNRNoiseLevel",self.noiseLevel, //0.07, 0~0.1
+                     @"inputNRSharpness",self.sharpness,//0.71 ,0~2
+                     @"inputEdgeIntensity",self.edgeIntensity,//1.0 ,0.0~20
+                     @"inputThreshold",self.threshold,//0.1 ,0~1
+                     @"inputContrast",self.contrast,// 50 ,0.25~200
+                     nil];
+                     */
                     
                     
                     let cgImage = CIContext(options: nil).createCGImage(ciImage, from: CGRect(x: 0, y: 0, width: 1000, height: 1000))

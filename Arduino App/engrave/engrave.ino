@@ -154,6 +154,22 @@ void loop() {
      {
       laser.off();
       }
+  }else if (action == "r")
+  {
+    char arr[500];
+    op.substring(1,501).toCharArray(arr, 5);
+    motorX.changeDirection(true);
+    for(int i=0;i< 500;i++)
+    {
+      laser.light(int(arr[i]));
+      delay(100);
+      for(int j=0;j< 20;j++){ motorX.step(); }
+    }
+    laser.off();
+  } if (action == "n")
+  {
+    motorY.changeDirection(true);
+    for(int j=0;j< 20;j++){ motorY.step(); }
   }
 
  op = "";

@@ -1,6 +1,0 @@
-framework module Pods_engrave {
-  umbrella header "Pods-engrave-umbrella.h"
-
-  export *
-  module * { export * }
-}

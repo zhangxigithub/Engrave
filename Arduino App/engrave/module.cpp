@@ -12,7 +12,7 @@ class Motor
   int directionPort;
   int position = 0;
   bool direction = false;
-  int duration = 1000;
+  int duration = 600;
   
   void changeDirection(bool d)
   {
@@ -34,10 +34,10 @@ class Motor
     digitalWrite(stepPort, LOW);
     delayMicroseconds(duration);
 
-    if (duration >500)
-    {
-      duration --;
-     }
+//    if (duration >500)
+//    {
+//      duration --;
+//    }
 
     
   }
@@ -60,6 +60,9 @@ class Laser
   void off()
   {
     digitalWrite(port, HIGH);
+  }
+  void light(int value)
+  {
   }
 };
 class Joystick
