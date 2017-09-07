@@ -157,8 +157,12 @@ void loop() {
   }else if (action == "r")
   {
     char arr[500];
-    op.substring(1,501).toCharArray(arr, 5);
-    motorX.changeDirection(true);
+    
+    bool d = op.substring(1,2) == "1";
+    motorX.changeDirection(d);
+
+    op.substring(2,502).toCharArray(arr, 5);
+    
     for(int i=0;i< 500;i++)
     {
       laser.light(int(arr[i]));
