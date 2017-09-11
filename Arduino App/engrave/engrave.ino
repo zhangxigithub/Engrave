@@ -4,16 +4,16 @@
 #include "module.cpp"
 
 
-Motor motorX(8,9);
-Motor motorY(10,11);
-Laser laser(12);
-Joystick joystick(A4,A5);
-SoftwareSerial ble(2, 3);
+Motor motorX(2,3);
+Motor motorY(4,5);
+Laser laser(6);
+
+SoftwareSerial ble(9,8);
 
 void setup() {
   //Serial.begin(9600);
   //Serial.println("start");
-  ble.begin(115220);
+  ble.begin(9600);
   
   digitalWrite(12,HIGH);
   
@@ -146,14 +146,8 @@ void loop() {
   }else if (action == "l")
   {
     ble.println(op);
-    bool laserOn = op.substring(1,2) == "1";
-    if(laserOn)
-    {
-      laser.on();
-     }else
-     {
-      laser.off();
-      }
+    int l = op.substring(1,4).toInt();
+    laser.light(l);
   }else if (action == "r")
   {
     char arr[500];

@@ -17,24 +17,31 @@ class ViewController: NSViewController,EngraveRobotDelegate{
 
     var svg : SVG?
     var robot : EngraveRobot!
+    var converter : Converter?
     
     @IBOutlet weak var preview: NSImageView!
     @IBOutlet var logView: NSTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        //robot = EngraveRobot()
-        //robot.delegate = self
-        //robot.connect()
+        
+        //self.connectRobot("")
     }
 
 
     @IBAction func connectRobot(_ sender: Any) {
-//        robot = EngraveRobot()
-//        robot.connect()
+        robot = EngraveRobot()
+        robot.delegate = self
+        robot.connect()
     }
     
     func didReceviveMessgae(message: String) {
         self.logView.string = (self.logView.string ?? "") + message + "\n"
+    }
+    func didConnected() {
+        
+    }
+    func didDisconnected() {
+        
     }
     
     @IBAction func sendMessage(_ sender: Any) {
@@ -61,66 +68,14 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             
             if panel.url != nil
             {
-                if let image = CIImage(contentsOf: panel.url!)
-                {
+                self.converter = Converter(path: panel.url!)
+             
+                print(self.converter!.originImage.size)
+                print(self.converter!.resizedImage.size)
+                print(self.converter!.filteredImage.size)
                 
-                    let f = CIFilter( name: "CILineOverlay", withInputParameters:[kCIInputImageKey:image])
-                    
-
-                    /*
-                     
-                     [f setValue:[NSNumber numberWithFloat:yscale]
-                     forKey:@"inputScale"];
-                     */
-                    let i = f?.value(forKeyPath: kCIOutputImageKey) as! CIImage
-                    
-                    
-                    
-                    let f2 = CIFilter(name: "CILanczosScaleTransform", withInputParameters: [kCIInputImageKey:i])
-                    
-                    f2?.setValue(0.3, forKey: kCIInputScaleKey)
-                    
-                    let i2 = f2?.value(forKeyPath: kCIOutputImageKey) as! CIImage
-                    
-                    let r = NSBitmapImageRep(ciImage: i2)
-                    print(r.size)
-                    print(r.colorAt(x: 10, y: 10))
-    
-                    
-                    /*
-                     
-                     CIImage * resultimg=[lineFilter valueForKey:kCIOutputImageKey];
-                     
-                     
-                     NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithCIImage:resultimg];
-                     
-                     NSData *pngdata = [rep representationUsingType:NSPNGFileType properties:nil];
-                     self.imgView.image=[[NSImage alloc] initWithData:pngdata];
-                     */
-                    
-                    let ciImage = image.applyingFilter("CILineOverlay", withInputParameters:
-                        ["inputThreshold":0.1])
-                    print(ciImage)
-                    
-                    let cgImage = CIContext(options: nil).createCGImage(ciImage, from: CGRect(x: 0, y: 0, width: 1000, height: 1000))
-                    //convert cgImage to 500*500px
-                    
-                    let nsImage = NSImage(cgImage:cgImage! ,size: NSSize(width:100, height:100))
-                    
-                    self.preview.image = nsImage;
-
-                    
-                    
-                    let rep = NSBitmapImageRep(cgImage: cgImage!)
-                    
-                    
-                    print(rep.size)
-                    
-                    print(rep.colorAt(x: 100, y: 100))
-
-                }
-                
-
+                self.preview.image = self.converter!.engraveImage
+                //self.preview.image = self.converter!.filteredImage
             }
         }
     }
@@ -149,6 +104,13 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     
     @IBAction func engrave(_ sender: Any) {
         print(self.svg?.pathes ?? "")
+        
+        
+        
+        self.converter?.colorArray
+        
+        
+        
     }
 
     
@@ -178,6 +140,10 @@ class ViewController: NSViewController,EngraveRobotDelegate{
         robot.isLaserOn = false
     }
     
+    @IBAction func laserChanged(_ sender: NSSlider) {
+        //print(sender.intValue)
+        robot.laser(value: Int(sender.intValue))
+    }
     
     override var representedObject: Any? {
         didSet {

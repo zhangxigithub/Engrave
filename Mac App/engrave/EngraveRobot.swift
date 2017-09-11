@@ -18,6 +18,8 @@ import CoreBluetooth
 
 protocol EngraveRobotDelegate
 {
+    func didConnected()
+    func didDisconnected()
     func didReceviveMessgae(message:String)
 }
 class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
@@ -31,14 +33,18 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
         didSet{
             if isLaserOn
             {
-                self.send(message: "l1#")
+                self.send(message: "l255#")
             }else
             {
-                self.send(message: "l0#")
+                self.send(message: "l000#")
             }
         }
     }
     
+    func laser(value:Int)
+    {
+        self.send(message: String(format:"l%3d#",value))
+    }
     
 
     func move(to point:CGPoint)
@@ -108,6 +114,10 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
     }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("didDisconnectPeripheral")
+        if peripheral.name == "ZHANGXI"
+        {
+            self.delegate?.didDisconnected()
+        }
     }
     
     
@@ -135,7 +145,7 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
         print(RSSI)
 
 
-        if peripheral.name == "JDY-08"
+        if peripheral.name == "ZHANGXI"
         {
             self.connect(peripheral: peripheral)
             self.stop()
@@ -146,6 +156,10 @@ class EngraveRobot : NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("didConnect")
         print(peripheral)
+        if peripheral.name == "ZHANGXI"
+        {
+            self.delegate?.didDisconnected()
+        }
         peripheral.discoverServices(nil)
     }
     
