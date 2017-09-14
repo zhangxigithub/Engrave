@@ -61,17 +61,20 @@ class Converter{
     var colorArray : [[Int]]
     {
         var result = [[Int]]()
-        let inputRep = NSBitmapImageRep( data: resizedImage.tiffRepresentation!)
+        let inputRep = NSBitmapImageRep( data: originImage.tiffRepresentation!)
         
-        for i in 0 ..< 500
+        for i in 0 ... 50
         {
             var line = [Int]()
-            for j in 0 ..< 500
+            for j in 0 ... 50
             {
                 if let color = inputRep?.colorAt(x: i, y: j)
                 {
-                    let c = 255-(color.alphaComponent*255)/3
+                    //print(color)
+                    //print(" o: \(color.whiteComponent)")
+                    let c = (255 - (color.whiteComponent * 255)-1)/25.5
                     line.append(Int(c))
+                    //print(c)
                 }else
                 {
                     line.append(0)

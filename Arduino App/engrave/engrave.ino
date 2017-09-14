@@ -86,7 +86,7 @@ String op = "";
 void loop() {
  if( ble.available() > 0 ){
     op += char(ble.read());
-    delay(2);
+    delay(3);
   }
   if(op.endsWith("#") == false)
   {
@@ -96,16 +96,6 @@ void loop() {
 
 
   String action = op.substring(0,1);
-  
-//  switch(joystick.moveAction())
-//  {
-//    case 1:break;
-//    case 2:break;
-//    case 3:break;
-//    case 4:break;
-//    default:break;
-//    }
-
 
 
   if (action == "m")
@@ -149,21 +139,24 @@ void loop() {
     int l = op.substring(1,4).toInt();
     laser.light(l);
   }else if (action == "r")
-  {
-    char arr[500];
-    
+  { 
+    ble.println("r start");
     bool d = op.substring(1,2) == "1";
     motorX.changeDirection(d);
 
-    op.substring(2,502).toCharArray(arr, 5);
     
-    for(int i=0;i< 500;i++)
+    for(int i=2;i< 52;i++)
     {
-      laser.light(int(arr[i]));
+      int value   = op.substring(i,i+1).toInt();
+      laser.light(25.5*value);
+      ble.println("engrave"+String(25.5*value));
       delay(100);
       for(int j=0;j< 20;j++){ motorX.step(); }
+      ble.println("x move");
     }
+    for(int j=0;j< 20;j++){ motorY.step(); }
     laser.off();
+    ble.println("linefinish");
   } if (action == "n")
   {
     motorY.changeDirection(true);

@@ -23,7 +23,9 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     @IBOutlet var logView: NSTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("~~~~")
+        print(String(UnicodeScalar(UInt8(1))))
+        print(String(UnicodeScalar(UInt8(255))))
         //self.connectRobot("")
     }
 
@@ -32,10 +34,39 @@ class ViewController: NSViewController,EngraveRobotDelegate{
         robot = EngraveRobot()
         robot.delegate = self
         robot.connect()
+        
+
     }
     
     func didReceviveMessgae(message: String) {
         self.logView.string = (self.logView.string ?? "") + message + "\n"
+        
+        
+        
+        if message == "linefinish" && line < 50
+        {
+            var dot = converter?.colorArray[line]
+            if line % 2 == 1
+            {
+                dot?.reverse()
+            }
+            
+            var ins = "r" + ((line % 2 == 1) ? "1" : "0")
+            for c in dot!
+            {
+                print(c)
+                ins += String(Int(c))
+                    //String(format:"%3d",c)
+            }
+            ins += "#"
+            robot.send(message: ins)
+            //robot.send(message: "r0111#")
+            line += 1
+        }
+        
+
+        
+        
     }
     func didConnected() {
         
@@ -56,6 +87,8 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     
     
     
+    
+    
     @IBAction func importImage(_ sender: Any) {
         
         
@@ -70,11 +103,12 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             {
                 self.converter = Converter(path: panel.url!)
              
-                print(self.converter!.originImage.size)
-                print(self.converter!.resizedImage.size)
-                print(self.converter!.filteredImage.size)
+                //print(self.converter!.originImage.size)
+                //print(self.converter!.resizedImage.size)
+                //print(self.converter!.filteredImage.size)
                 
-                self.preview.image = self.converter!.engraveImage
+                self.preview.image = self.converter!.originImage
+                print(self.converter!.colorArray[0])
                 //self.preview.image = self.converter!.filteredImage
             }
         }
@@ -102,12 +136,15 @@ class ViewController: NSViewController,EngraveRobotDelegate{
         }
     }
     
+    
+    var line = 0
+    
     @IBAction func engrave(_ sender: Any) {
         print(self.svg?.pathes ?? "")
         
         
         
-        self.converter?.colorArray
+        self.didReceviveMessgae(message: "linefinish")
         
         
         
