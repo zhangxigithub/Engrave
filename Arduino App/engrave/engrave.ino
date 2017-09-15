@@ -148,13 +148,19 @@ void loop() {
     for(int i=2;i< 52;i++)
     {
       int value   = op.substring(i,i+1).toInt();
-      laser.light(25.5*value);
-      ble.println("engrave"+String(25.5*value));
-      delay(100);
-      for(int j=0;j< 20;j++){ motorX.step(); }
+      if (value > 5)
+      {
+        laser.on();
+        delay(100);
+      }else
+      {
+        laser.off();
+      }
+      
+      for(int j=0;j< 30;j++){ motorX.step(); }
       ble.println("x move");
     }
-    for(int j=0;j< 20;j++){ motorY.step(); }
+    for(int j=0;j< 30;j++){ motorY.step(); }
     laser.off();
     ble.println("linefinish");
   } if (action == "n")
