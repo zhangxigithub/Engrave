@@ -38,12 +38,16 @@ class ViewController: NSViewController,EngraveRobotDelegate{
 
     }
     
+    
+    var step = 0;
+    
     func didReceviveMessgae(message: String) {
         self.logView.string = (self.logView.string ?? "") + message + "\n"
         
         
+
         
-        if message == "linefinish" && line < 50
+        if message == "linefinish" && line < 50 && self.converter != nil
         {
             var dot = converter?.colorArray[line]
             if line % 2 == 1
@@ -55,7 +59,7 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             for c in dot!
             {
                 print(c)
-                ins += String(Int(c))
+                ins += String(Int(c) > 0 ? 9 :0)
                     //String(format:"%3d",c)
             }
             ins += "#"
@@ -64,6 +68,20 @@ class ViewController: NSViewController,EngraveRobotDelegate{
             line += 1
         }
         
+        if self.svg != nil
+        {
+            if message == "svgfinish" && step < self.svg!.pathes.count
+            {
+                print("step \(step)")
+                let path = self.svg!.pathes[step]
+                step += 1
+                print("from : \(path.start) to \(path.end) ")
+                
+                let s = String(format:"m%05d%05d%d#",Int(path.end.x*50),Int(path.end.y*50),path.laser ? 1 :0)
+                robot.send(message: s)
+                
+            }
+        }
 
         
         
@@ -131,6 +149,12 @@ class ViewController: NSViewController,EngraveRobotDelegate{
                 self.svg = SVG(url: panel.url!, finish: { (svg) in
                     
                     print(svg.pathes)
+                    
+                    
+                    for p in svg.pathes
+                    {
+                        print("start \(p.start) end \(p.end)")
+                    }
                 })
             }
         }
@@ -140,11 +164,24 @@ class ViewController: NSViewController,EngraveRobotDelegate{
     var line = 0
     
     @IBAction func engrave(_ sender: Any) {
-        print(self.svg?.pathes ?? "")
         
         
         
-        self.didReceviveMessgae(message: "linefinish")
+        if self.svg != nil
+        {
+            //let path = self.svg?.pathes.first!
+            //let s = String(format:"m%05d%05d0#",Int(path!.start.x*10),Int(path!.start.y*10))
+            //robot.send(message: s)
+            self.didReceviveMessgae(message: "svgfinish")
+        }
+        
+        
+        
+        
+        if converter != nil
+        {
+            self.didReceviveMessgae(message: "linefinish")
+        }
         
         
         

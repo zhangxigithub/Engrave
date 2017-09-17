@@ -14,7 +14,7 @@ class SVG : NSObject, XMLParserDelegate{
     
     var parser : XMLParser?
     var url : URL
-    var size : CGSize?
+    var size : CGSize!
     var finishHandler : ((SVG)->Void)
     
     var pathes = [LaserPath]()
@@ -68,13 +68,59 @@ class SVG : NSObject, XMLParserDelegate{
         
         switch elementName {
         case "svg":
-            break
+            let w = Float(attributeDict["width"]!)!
+            let h = Float(attributeDict["height"]!)!
+            self.size = CGSize(width: CGFloat(w), height: CGFloat(h))
         case "path":
             break
         case "line":
-            pathes.append(LaserPathPolyline(line: attributeDict))
+            print(attributeDict)
+            
+            let path1 = LineLaserPath()
+            path1.start = CGPoint.zero//CGPoint( x: Double(attributeDict["x1"]!)!/Double(size.width)*50  , y: Double(attributeDict["y1"]!)!/Double(size.height)*50 )
+            path1.end = CGPoint( x: Double(attributeDict["x1"]!)!/Double(size.width)*50  , y: Double(attributeDict["y1"]!)!/Double(size.height)*50 )
+            pathes.append(path1)
+            
+            
+            
+            let path = LineLaserPath()
+            path.laser = true
+            path.start = CGPoint.zero
+                //CGPoint( x: Double(attributeDict["x2"]!)!/Double(size.width)*50  , y: Double(attributeDict["y2"]!)!/Double(size.height)*50 )
+            path.end = CGPoint( x: Double(attributeDict["x2"]!)!/Double(size.width)*50  , y: Double(attributeDict["y2"]!)!/Double(size.height)*50 )
+            pathes.append(path)
+            
+            
+            //pathes.append(LaserPathPolyline(line: attributeDict))
         case "polyline":
-            pathes.append(LaserPathPolyline(polyline: attributeDict))
+            
+            
+            
+            for (i,item) in attributeDict["points"]!.components(separatedBy: " ").enumerated()
+            {
+                let xy = item.components(separatedBy: ",")
+                let point = CGPoint( x: Double(xy[0])!/Double(size.width)*50 , y: Double(xy[1])!/Double(size.height)*50)
+                if i == 0
+                {
+                    let path = LineLaserPath()
+                    path.start = point
+                    path.end = point
+                    pathes.append(path)
+                }else
+                {
+                    let path = LineLaserPath()
+                    path.laser = true
+                    path.start = point
+                    path.end = point
+                    pathes.append(path)
+                }
+            }
+            
+
+            
+            
+            print(attributeDict)
+            //pathes.append(LaserPathPolyline(polyline: attributeDict))
         default:
             break
         }
@@ -97,7 +143,9 @@ class SVG : NSObject, XMLParserDelegate{
 
 class LaserPath
 {
-
+    var laser = false
+    var start : CGPoint!
+    var end   : CGPoint!
 }
 
 class LaserPathPolyline : LaserPath
@@ -129,6 +177,10 @@ class LaserPathPolyline : LaserPath
         points.append(CGPoint( x: Double(attributeDict["x1"]!)! , y: Double(attributeDict["y1"]!)!))
         points.append(CGPoint( x: Double(attributeDict["x2"]!)! , y: Double(attributeDict["y2"]!)!))
     }
+}
+class LineLaserPath : LaserPath
+{
+
 }
 
 

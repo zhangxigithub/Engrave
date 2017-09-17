@@ -109,6 +109,7 @@ void loop() {
     ble.println(y);
 
     move(x,y,laser);
+    ble.println("svgfinish");
   }
   else if (action == "x")
   {
@@ -148,7 +149,7 @@ void loop() {
     for(int i=2;i< 52;i++)
     {
       int value   = op.substring(i,i+1).toInt();
-      if (value > 5)
+      if (value > 3)
       {
         laser.on();
         delay(100);
